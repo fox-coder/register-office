@@ -2,15 +2,13 @@ package com.fox.registeroffice.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -28,14 +26,12 @@ public class Passport {
     private Long id;
 
     @NotNull
+    @Length(min=4, max=4)
     private String seria;
     @NotNull
+    @Length(min=6, max=6)
     private String number;
     @NotNull
     private Date issueDate;
     private String whereIssued;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "client_id")
-    private Client client;
 }

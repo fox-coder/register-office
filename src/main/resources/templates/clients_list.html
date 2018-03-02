@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register Office v1.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<a href="/register_office">Назад</a>
+
+<h1>Найденные клиенты</h1>
+
+<div>
+    <table border="1">
+        <tr>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Телефон</th>
+            <th></th>
+        </tr>
+        <tr th:each="client: ${clients}">
+            <td th:text="${client.surname}">...</td>
+            <td th:text="${client.name}">...</td>
+            <td th:text="${client.mobile}">...</td>
+            <td><a th:href="@{/{id}/edit_client(id=${client.id})}">Редактировать</a></td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

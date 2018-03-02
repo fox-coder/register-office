@@ -8,11 +8,23 @@
 <body>
 
 <div class="container">
-
     <div class="starter-template">
         <h1>Регистратура v1.0</h1>
-    </div>
 
+        <form method="post" action="/find_clients" th:object="${search}"  th:size="100">
+            <fieldset>
+                <legend>Поиск клиента:</legend>
+                <input type="text" name="findfield" th:field="*{searchString}" autocomplete="off" size="30" />
+                <input type="submit" value="Search" />
+            </fieldset>
+        </form>
+
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" style="color:red;font-style:italic;">
+        </div>
+
+        <a href="/register_client">Регистрация клиента</a>
+
+    </div>
 </div>
 
 </body>
