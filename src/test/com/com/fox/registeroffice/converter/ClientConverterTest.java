@@ -28,6 +28,7 @@ public class ClientConverterTest {
         assertEquals(client.getName(), clientDto.getName());
         assertEquals(client.getSurname(), clientDto.getSurname());
         assertEquals(client.getPatronymic(), clientDto.getPatronymic());
+        assertEquals(client.getBirthday(), clientDto.getBirthday());
         assertEquals(client.getMobile(), clientDto.getMobile());
 
         Passport passport = client.getPassports().get(0);
@@ -97,6 +98,7 @@ public class ClientConverterTest {
         clientDto.setSurname("Surname");
         clientDto.setPatronymic("Patronymic");
         clientDto.setMobile("9874563217");
+        clientDto.setBirthday(new Date(87,5,23));
         clientDto.setAdditionalPhones(Collections.singletonList(phoneDto));
         clientDto.setPassports(Collections.singletonList(passportDto));
         return clientDto;

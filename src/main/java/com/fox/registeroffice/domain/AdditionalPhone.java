@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Data
@@ -23,6 +25,9 @@ public class AdditionalPhone {
     private Long id;
 
     @NotNull
+    @Pattern(regexp = "^[0-9]{6,10}$",
+            message = "Номер телефона должен содержать от 6 до 10 цифр")
     private String phone;
+    @Size(max = 200, message="Комментарий не более 200 символов")
     private String additionalInfo;
 }

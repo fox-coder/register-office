@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -29,8 +35,21 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public void saveClient(ClientDto clientDto) {
-        log.info(clientDto.toString());
-        clientRepository.save(clientConverter.dtoToEntity(clientDto));
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Client client = clientConverter.dtoToEntity(clientDto);
+        Set<ConstraintViolation<Client>> violations = validator.validate(client);
+
+        if (!CollectionUtils.isEmpty(violations)) {
+            StringBuilder errorBuilder = new StringBuilder();
+            for (ConstraintViolation<Client> violation : violations) {
+                errorBuilder.append(violation.getMessage()).append("; ");
+            }
+            throw new IllegalArgumentException(errorBuilder.toString());
+        }
+
+        clientRepository.save(client);
     }
 
     @Override

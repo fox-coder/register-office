@@ -42,8 +42,14 @@ public class RegisterOfficeController {
 
     @RequestMapping(value = "/save_client", method = RequestMethod.POST)
     public String saveClient(Map<String, Object> model, @Valid @ModelAttribute("client")ClientDto clientDto) {
-        log.info(clientDto.toString());
-        clientService.saveClient(clientDto);
+        try {
+            clientService.saveClient(clientDto);
+        } catch (IllegalArgumentException e) {
+            model.put("errorMessage", e.getMessage());
+            model.put("client", clientDto);
+            return "register_client";
+        }
+
         return "redirect:/register_office";
     }
 

@@ -15,9 +15,10 @@ public final class TestObjectHelper {
     public static Client getClient() {
         Client testClient = new Client();
         testClient.setMobile("9999999999");
-        testClient.setName("Name");
-        testClient.setPatronymic("Patronymic");
-        testClient.setSurname("Surname");
+        testClient.setName("Имя");
+        testClient.setPatronymic("Отчество");
+        testClient.setSurname("Фамилия");
+        testClient.setBirthday(new Date(87,5,23));
         return testClient;
     }
 
@@ -25,7 +26,7 @@ public final class TestObjectHelper {
         Passport testPassport = new Passport();
         testPassport.setNumber("123456");
         testPassport.setSeria("1234");
-        testPassport.setIssueDate(new Date());
+        testPassport.setIssueDate(new Date(111,5,23));
         testPassport.setWhereIssued("issued");
         return testPassport;
     }
