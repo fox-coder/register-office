@@ -13,4 +13,8 @@ public interface ClientRepository  extends CrudRepository<Client, Long> {
 
     List<Client> findClientsByMobile(String mobile);
 
+    List<Client> findClientsBySurnameAndName(String surname, String name);
+
+    List<Client> findClientsByMobileAndSurnameAndName(String mobile, String surname, String name);
+
 }

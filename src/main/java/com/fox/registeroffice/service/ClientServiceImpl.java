@@ -35,20 +35,8 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public void saveClient(ClientDto clientDto) {
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
         Client client = clientConverter.dtoToEntity(clientDto);
-        Set<ConstraintViolation<Client>> violations = validator.validate(client);
-
-        if (!CollectionUtils.isEmpty(violations)) {
-            StringBuilder errorBuilder = new StringBuilder();
-            for (ConstraintViolation<Client> violation : violations) {
-                errorBuilder.append(violation.getMessage()).append("; ");
-            }
-            throw new IllegalArgumentException(errorBuilder.toString());
-        }
-
+        validateClient(client);
         clientRepository.save(client);
     }
 
@@ -73,9 +61,41 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ClientDto> findClients(String searchString) {
-        List<Client> clients = clientRepository.findClientsByMobile(searchString);
+        log.info("findClients: search string " + searchString);
+        List<Client> clients;
+        String[] searchParts = searchString.trim().split(" ");
+        if (searchParts.length == 1) {
+            clients = clientRepository.findClientsByMobile(searchString);
+        } else if (searchParts.length == 2) {
+            clients = clientRepository.findClientsBySurnameAndName(searchParts[0], searchParts[1]);
+            clients.addAll(clientRepository.findClientsBySurnameAndName(searchParts[1], searchParts[0]));
+        } else {
+            clients = clientRepository.findClientsByMobileAndSurnameAndName(searchParts[0], searchParts[1], searchParts[2]);
+            clients.addAll(clientRepository.findClientsByMobileAndSurnameAndName(searchParts[0], searchParts[2], searchParts[1]));
+            clients.addAll(clientRepository.findClientsByMobileAndSurnameAndName(searchParts[1], searchParts[0], searchParts[2]));
+            clients.addAll(clientRepository.findClientsByMobileAndSurnameAndName(searchParts[1], searchParts[2], searchParts[0]));
+            clients.addAll(clientRepository.findClientsByMobileAndSurnameAndName(searchParts[2], searchParts[1], searchParts[0]));
+            clients.addAll(clientRepository.findClientsByMobileAndSurnameAndName(searchParts[2], searchParts[0], searchParts[1]));
+        }
         return CollectionUtils.isEmpty(clients)? new ArrayList<>() : clientConverter.entityListToDtoList(clients);
 
+    }
+
+
+
+    private static void validateClient(Client client) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Set<ConstraintViolation<Client>> violations = validator.validate(client);
+
+        if (!CollectionUtils.isEmpty(violations)) {
+            StringBuilder errorBuilder = new StringBuilder();
+            for (ConstraintViolation<Client> violation : violations) {
+                errorBuilder.append(violation.getMessage()).append("; ");
+            }
+            throw new IllegalArgumentException(errorBuilder.toString());
+        }
     }
 
 

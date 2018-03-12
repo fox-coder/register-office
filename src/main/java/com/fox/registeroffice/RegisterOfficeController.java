@@ -27,8 +27,13 @@ public class RegisterOfficeController {
         this.clientService = clientService;
     }
 
-    @RequestMapping(value = { "/", "/index", "/register_office" }, method = RequestMethod.GET)
-    public String mainPage(Map<String, Object> model) {
+    @RequestMapping(value = { "/", "/index", "/login" })
+    public String mainPage() {
+        return "login";
+    }
+
+    @RequestMapping(value = { "/register_office" }, method = RequestMethod.GET)
+    public String registerOffice(Map<String, Object> model) {
         model.put("search", new SearchDto());
         return "register_office";
     }
@@ -42,16 +47,25 @@ public class RegisterOfficeController {
 
     @RequestMapping(value = "/save_client", method = RequestMethod.POST)
     public String saveClient(Map<String, Object> model, @Valid @ModelAttribute("client")ClientDto clientDto) {
+        return tryToSaveClient(model, clientDto, "register_client");
+    }
+
+    @RequestMapping(value = "/update_client", method = RequestMethod.POST)
+    public String updateClient(Map<String, Object> model, @Valid @ModelAttribute("client")ClientDto clientDto) {
+        return tryToSaveClient(model, clientDto, "edit_client");
+    }
+
+    private String tryToSaveClient(Map<String, Object> model, ClientDto clientDto, String pageToRedirect) {
         try {
             clientService.saveClient(clientDto);
         } catch (IllegalArgumentException e) {
             model.put("errorMessage", e.getMessage());
             model.put("client", clientDto);
-            return "register_client";
+            return pageToRedirect;
         }
-
         return "redirect:/register_office";
     }
+
 
     @RequestMapping(value = "/{clientId}/edit_client")
     public String editClient(Map<String, Object> model, @PathVariable(value = "clientId") Long clientId) {
@@ -71,5 +85,9 @@ public class RegisterOfficeController {
         return "clients_list";
     }
 
+    @RequestMapping("/access-denied")
+    public String accessDenied() {
+        return "/error/access-denied";
+    }
 
 }

@@ -1,11 +1,16 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Register Office v1.0</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 </head>
 <body>
+
+<span sec:authorize="isAuthenticated()">
+    <a th:href="@{/logout}">Sign Out</a>
+</span>
 
 <div class="container">
     <div class="starter-template">

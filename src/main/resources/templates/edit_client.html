@@ -11,7 +11,7 @@
     <div class="starter-template">
         <h1>Редактирование клиента</h1>
 
-        <form th:action="@{/save_client}"  th:object="${client}" method="POST">
+        <form th:action="@{/update_client}"  th:object="${client}" method="POST">
             <fieldset>
                 <input hidden th:field="*{id}">
                 <legend>ФИО:</legend>
