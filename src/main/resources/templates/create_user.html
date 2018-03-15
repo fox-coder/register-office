@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<head>
+    <title>Register Office v1.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<div class="container">
+    <div class="starter-template">
+        <h1>Register user</h1>
+
+        <form th:action="@{/save_user}"  th:object="${user}" method="POST">
+
+            <fieldset>
+                <input hidden th:field="*{id}">
+                <label for="login">Login: </label>
+                <input type="text" id="login"  name="login" autocomplete="off" size="30" th:field="*{login}"
+                       required minlength="4" maxlength="25" > <br/>
+                <label for="password">Password: </label>
+                <input type="text" id="password"  name="password" autocomplete="off" size="30" th:field="*{password}"
+                       required minlength="6" maxlength="250" > <br/>
+
+                <label for="role">Role: </label>
+                <select id="role" name="role" required th:field="*{role}">
+                    <option selected value="USER">User</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+
+            </fieldset>
+
+            <input type="submit" value="Register" />
+        </form>
+
+        <br/>
+        <!-- Check if errorMessage is not null and not empty -->
+
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" style="color:red;font-style:italic;">
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

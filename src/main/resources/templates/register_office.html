@@ -8,9 +8,7 @@
 </head>
 <body>
 
-<span sec:authorize="isAuthenticated()">
-    <a th:href="@{/logout}">Sign Out</a>
-</span>
+<a th:href="@{/logout}">Sign Out</a>
 
 <div class="container">
     <div class="starter-template">
@@ -27,7 +25,14 @@
         <div th:if="${errorMessage}" th:utext="${errorMessage}" style="color:red;font-style:italic;">
         </div>
 
-        <a href="/register_client">Регистрация клиента</a>
+        <a href="/register_client">Регистрация клиента</a> <br/>
+
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <br/>
+            <a href="/create_user">Регистрация пользователя</a> <br/>
+            <a href="/users_list">Список пользователей</a> <br/>
+        </div>
+
 
     </div>
 </div>

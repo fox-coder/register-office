@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Register Office v1.0</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -17,12 +18,15 @@
             <th>Имя</th>
             <th>Телефон</th>
             <th></th>
+            <th sec:authorize="hasAuthority('ADMIN')"></th>
         </tr>
         <tr th:each="client: ${clients}">
             <td th:text="${client.surname}">...</td>
             <td th:text="${client.name}">...</td>
             <td th:text="${client.mobile}">...</td>
             <td><a th:href="@{/{id}/edit_client(id=${client.id})}">Редактировать</a></td>
+            <td sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{/{id}/delete_client(id=${client.id})}">Удалить</a></td>
         </tr>
     </table>
 

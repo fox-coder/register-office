@@ -2,7 +2,9 @@ package com.fox.registeroffice;
 
 import com.fox.registeroffice.dto.ClientDto;
 import com.fox.registeroffice.dto.SearchDto;
+import com.fox.registeroffice.dto.UserDto;
 import com.fox.registeroffice.service.ClientService;
+import com.fox.registeroffice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,18 +23,20 @@ import java.util.Map;
 public class RegisterOfficeController {
 
     private final ClientService clientService;
+    private final UserService userService;
 
     @Autowired
-    public RegisterOfficeController(ClientService clientService) {
+    public RegisterOfficeController(ClientService clientService, UserService userService) {
         this.clientService = clientService;
+        this.userService = userService;
     }
 
-    @RequestMapping(value = { "/", "/index", "/login" })
+    @RequestMapping(value = {"/login" })
     public String mainPage() {
         return "login";
     }
 
-    @RequestMapping(value = { "/register_office" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/", "/index", "/register_office" }, method = RequestMethod.GET)
     public String registerOffice(Map<String, Object> model) {
         model.put("search", new SearchDto());
         return "register_office";
@@ -55,22 +59,16 @@ public class RegisterOfficeController {
         return tryToSaveClient(model, clientDto, "edit_client");
     }
 
-    private String tryToSaveClient(Map<String, Object> model, ClientDto clientDto, String pageToRedirect) {
-        try {
-            clientService.saveClient(clientDto);
-        } catch (IllegalArgumentException e) {
-            model.put("errorMessage", e.getMessage());
-            model.put("client", clientDto);
-            return pageToRedirect;
-        }
-        return "redirect:/register_office";
-    }
-
-
     @RequestMapping(value = "/{clientId}/edit_client")
     public String editClient(Map<String, Object> model, @PathVariable(value = "clientId") Long clientId) {
         model.put("client", clientService.findClient(clientId));
         return "edit_client";
+    }
+
+    @RequestMapping(value = "/{clientId}/delete_client")
+    public String deleteClient(Map<String, Object> model, @PathVariable(value = "clientId") Long clientId) {
+        clientService.deleteClient(clientId);
+        return "redirect:/register_office";
     }
 
     @RequestMapping(value="/find_clients",  method = RequestMethod.POST)
@@ -85,9 +83,63 @@ public class RegisterOfficeController {
         return "clients_list";
     }
 
+    @RequestMapping("/create_user")
+    public String createUser(Map<String, Object> model) {
+        model.put("user", new UserDto());
+        return "create_user";
+    }
+
+    @RequestMapping(value = "/save_user", method = RequestMethod.POST)
+    public String saveUser(Map<String, Object> model, @Valid @ModelAttribute("user")UserDto userDto) {
+        return tryToSaveUser(model, userDto, "create_user");
+    }
+
+    @RequestMapping("/users_list")
+    public String usersList(Map<String, Object> model) {
+        List<UserDto> users = userService.getUsersList();
+        model.put("users", users);
+        return "users_list";
+    }
+
+    @RequestMapping(value = "/{userId}/remove_user")
+    public String removeUser(Map<String, Object> model, @PathVariable(value = "userId") Long userId) {
+        userService.deleteUser(userId);
+        return "redirect:/users_list";
+    }
+
+    @RequestMapping(value = "/{userId}/edit_user")
+    public String editUser(Map<String, Object> model, @PathVariable(value = "userId") Long userId) {
+        UserDto userDto = userService.findUser(userId);
+        userDto.setPassword(null);
+        model.put("user", userDto);
+        return "create_user";
+    }
+
     @RequestMapping("/access-denied")
     public String accessDenied() {
         return "/error/access-denied";
+    }
+
+    private String tryToSaveClient(Map<String, Object> model, ClientDto clientDto, String pageToRedirect) {
+        try {
+            clientService.saveClient(clientDto);
+        } catch (IllegalArgumentException e) {
+            model.put("errorMessage", e.getMessage());
+            model.put("client", clientDto);
+            return pageToRedirect;
+        }
+        return "redirect:/register_office";
+    }
+
+    private String tryToSaveUser(Map<String, Object> model, UserDto userDto, String pageToRedirect) {
+        try {
+            userService.saveUser(userDto);
+        } catch (IllegalArgumentException e) {
+            model.put("errorMessage", e.getMessage());
+            model.put("user", userDto);
+            return pageToRedirect;
+        }
+        return "redirect:/register_office";
     }
 
 }

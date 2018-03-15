@@ -24,8 +24,9 @@
         <postgresql.version>9.4.1211</postgresql.version>
         <swagger.version>2.7.0</swagger.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
-        <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
-        <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
+        <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>2.2.1</thymeleaf-layout-dialect.version>
+        <thymeleafspringsecurity4.version>3.0.2.RELEASE</thymeleafspringsecurity4.version>
     </properties>
 
     <dependencies>
@@ -41,7 +42,7 @@
 
         <dependency>
             <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf</artifactId>
+            <artifactId>thymeleaf-spring4</artifactId>
             <version>${thymeleaf.version}</version>
         </dependency>
 
@@ -49,6 +50,8 @@
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+            <version>${thymeleafspringsecurity4.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- hot swapping, disable cache for template, enable live reload -->
