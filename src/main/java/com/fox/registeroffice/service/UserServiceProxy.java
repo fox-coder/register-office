@@ -4,7 +4,7 @@ import com.fox.registeroffice.dto.UserDto;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserServiceProxy {
 
     void saveUser(UserDto userDto);
 

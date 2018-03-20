@@ -1,9 +1,10 @@
-package com.fox.registeroffice.service;
+package com.fox.registeroffice.service.impl;
 
 import com.fox.registeroffice.converter.ClientConverter;
 import com.fox.registeroffice.domain.Client;
 import com.fox.registeroffice.dto.ClientDto;
 import com.fox.registeroffice.repository.ClientRepository;
+import com.fox.registeroffice.service.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

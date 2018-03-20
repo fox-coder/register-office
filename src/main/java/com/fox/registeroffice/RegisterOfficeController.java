@@ -3,8 +3,8 @@ package com.fox.registeroffice;
 import com.fox.registeroffice.dto.ClientDto;
 import com.fox.registeroffice.dto.SearchDto;
 import com.fox.registeroffice.dto.UserDto;
-import com.fox.registeroffice.service.ClientService;
-import com.fox.registeroffice.service.UserService;
+import com.fox.registeroffice.service.ClientServiceProxy;
+import com.fox.registeroffice.service.UserServiceProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,11 +22,11 @@ import java.util.Map;
 @Slf4j
 public class RegisterOfficeController {
 
-    private final ClientService clientService;
-    private final UserService userService;
+    private final ClientServiceProxy clientService;
+    private final UserServiceProxy userService;
 
     @Autowired
-    public RegisterOfficeController(ClientService clientService, UserService userService) {
+    public RegisterOfficeController(ClientServiceProxy clientService, UserServiceProxy userService) {
         this.clientService = clientService;
         this.userService = userService;
     }

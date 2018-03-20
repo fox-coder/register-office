@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anonymous()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login", "/prometheus").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().failureHandler((request, response, exception) -> response.sendError(HttpStatus.UNAUTHORIZED.value(), "Failed to authorize"))

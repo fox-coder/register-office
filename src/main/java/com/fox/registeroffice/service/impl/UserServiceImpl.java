@@ -1,9 +1,10 @@
-package com.fox.registeroffice.service;
+package com.fox.registeroffice.service.impl;
 
 import com.fox.registeroffice.converter.UserConverter;
 import com.fox.registeroffice.domain.User;
 import com.fox.registeroffice.dto.UserDto;
 import com.fox.registeroffice.repository.UserRepository;
+import com.fox.registeroffice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
