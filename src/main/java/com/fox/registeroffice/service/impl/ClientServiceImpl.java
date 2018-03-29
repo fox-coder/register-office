@@ -42,6 +42,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public ClientDto getClient(Long clientId) {
         Client client = clientRepository.findOne(clientId);
         if (client == null) {
@@ -51,16 +52,19 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public void deleteClient(Long clientId) {
         clientRepository.delete(clientId);
     }
 
     @Override
+    @Transactional
     public ClientDto findClient(Long clientId) {
         return clientConverter.entityToDto(clientRepository.findOne(clientId));
     }
 
     @Override
+    @Transactional
     public List<ClientDto> findClients(String searchString) {
         log.info("findClients: search string " + searchString);
         List<Client> clients;
